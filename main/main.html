@@ -31,9 +31,6 @@
         margin-bottom: 10px;
       }
     </style>
-<script>
-let loginkey = null;
-</script>
   </head>
   <body>
     <label for="radius">Radius (miles):</label>
@@ -46,6 +43,12 @@ let loginkey = null;
     <input type="number" id="latti" name="latti" step="any">
 
     <button onclick="filterLocations()">Filter Locations</button>
+
+
+	<label for="search">Search:</label >
+    <input type="text" id="search" name="search" step="any">
+			
+	<button onclick="filterLocationsSearch()">Enter</button>
 
     <div id="controls">
       <select id="locationSelect" onchange="goToSelectedLocation()"></select>
@@ -85,18 +88,22 @@ let loginkey = null;
           lng: -74.0060
         }
       };
+
       function initMap() {
         const firstLocation = locations.dc;
         const firstCoords = { lat: firstLocation.lat, lng: firstLocation.lng };
+
         map = new google.maps.Map(document.getElementById("map"), {
           center: firstCoords,
           zoom: 100
         });
+
         marker = new google.maps.Marker({
           position: firstCoords,
           map: map,
           title: firstLocation.name
         });
+
         populateAllLocations();
         document.getElementById("locationTitle").textContent = firstLocation.name;
       }
@@ -104,6 +111,7 @@ let loginkey = null;
       function populateAllLocations() {
         const select = document.getElementById("locationSelect");
         select.innerHTML = "";
+
         for (const key in locations) {
           const option = document.createElement("option");
           option.value = key;
@@ -111,13 +119,16 @@ let loginkey = null;
           select.appendChild(option);
         }
       }
+
       function goToSelectedLocation() {
         const selectedKey = document.getElementById("locationSelect").value;
         if (!selectedKey || !locations[selectedKey]) {
           return;
         }
+
         const selectedLocation = locations[selectedKey];
         const coords = { lat: selectedLocation.lat, lng: selectedLocation.lng };
+
         document.getElementById("locationTitle").textContent = selectedLocation.name;
         map.setCenter(coords);
         map.setZoom(10);
@@ -177,7 +188,55 @@ let loginkey = null;
         select.value = firstMatchKey;
         goToSelectedLocation();
       }
+      function filterLocationsSearch() {
+        const radius = Number(document.getElementById("radius").value);
+        const userLng = Number(document.getElementById("longi").value);
+        const userLat = Number(document.getElementById("latti").value);
+		const userSearch = document.getElementById("search").value;
+        
 
+        const select = document.getElementById("locationSelect");
+        select.innerHTML = "";
+
+        let foundAny = false;
+        let firstMatchKey = null;
+
+        for (const key in locations) {
+          const loc = locations[key];
+          const distance = getDistanceMiles(userLat, userLng, loc.lat, loc.lng);
+
+          if (loc.name.includes(userSearch)) {
+            const option = document.createElement("option");
+            option.value = key;
+            option.textContent = loc.name;
+            select.appendChild(option);
+
+            if (!firstMatchKey) {
+              firstMatchKey = key;
+            }
+
+            foundAny = true;
+          }
+        }
+
+        if (!foundAny) {
+          const option = document.createElement("option");
+          option.textContent = "No locations by that name";
+          option.disabled = true;
+          option.selected = true;
+          select.appendChild(option);
+
+          document.getElementById("locationTitle").textContent = "No matching locations";
+          map.setCenter({ lat: userLat, lng: userLng });
+          map.setZoom(10);
+          marker.setPosition({ lat: userLat, lng: userLng });
+          marker.setTitle("Your coordinates");
+          return;
+        }
+
+        select.value = firstMatchKey;
+        goToSelectedLocation();
+      }
 	function getDistanceMiles(lat1, lon1, lat2, lon2) {
    	 	dLat = Math.PI*(lat1- lat2)/180;
 		dLon = Math.PI*(lon1 - lon2)/180;
