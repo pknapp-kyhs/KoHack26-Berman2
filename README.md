@@ -1,1 +1,2 @@
-# KoHack26-Berman2
+# KoHack26-
+# Kehilati: An app focusing on providing information about physical accessibility in different synagogues for users who have physical special needs. Includes ratings on reviews for specific features including entrances and exits, Shabbat elevators, ramps, wheelchair seating, etc. Additionally includes a Google Maps component that guides the user to the accessible entrances when not made obvious.
