@@ -52,6 +52,16 @@
     <div id="map"></div>
 
     <script>
+
+		function getLocation() {
+  			if (navigator.geolocation) {
+    			navigator.geolocation.getCurrentPosition(showPosition, showError);
+  				}
+
+			else {
+    			console.log("Geolocation is not supported by this browser.");
+  				}
+}
       let map;
       let marker;
 
@@ -189,5 +199,56 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ-MrK7fe_b0tUTyAsIlJ0UspZfxOJ_mc&loading=async&callback=initMap&v=weekly"
       async
     ></script>
+
+	    <h2>User Location</h2>
+    <p>Click the button to get your coordinates (latitude and longitude):</p>
+    
+    <!-- The button that triggers the location request -->
+    <button onclick="getLocation()">Get Location</button>
+    
+    <!-- The paragraph element where the coordinates will be displayed -->
+    <p id="demo">Geolocation is not supported by this browser.</p>
+
+    <!-- JavaScript code using the Geolocation API -->
+    <script>
+        // Get the <p> element by its ID
+        const x = document.getElementById("demo");
+
+        function getLocation() {
+            // Check if the browser supports the Geolocation API
+            if (navigator.geolocation) {
+                // If supported, request the current position and specify callback functions
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                // If not supported, display an error message
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        // Success callback function to display the coordinates
+        function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude + 
+            "<br>Longitude: " + position.coords.longitude;
+            // You can also access other data like accuracy, altitude, speed, etc.
+        }
+
+        // Error callback function to handle issues (e.g., user denial, timeout)
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    x.innerHTML = "User denied the request for Geolocation."
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    x.innerHTML = "Location information is unavailable."
+                    break;
+                case error.TIMEOUT:
+                    x.innerHTML = "The request to get user location timed out."
+                    break;
+                case error.UNKNOWN_ERROR:
+                    x.innerHTML = "An unknown error occurred."
+                    break;
+            }
+        }
+    </script>
   </body>
 </html>
