@@ -1,1 +1,8 @@
+{
+"shuls";
+  [
+    {"name":"KMS", "lattitude": 39.05, "longitude": -77.03, "ratingList": [{"Quality": "Ramps", "AverageRating": 3.5, "NumberOfRatings": 10}, {"Quality": "Shabbat Elevators", "AverageRating": 4.5, "NumberOfRatings": 15}], "reviewList": [{"Username": "peleman", "comment": "wth did the elevator swallow my first born child"},{"Username": "Nunger", "comment": "perfect, no complaints"}]}
+  ]
 
+  
+}
