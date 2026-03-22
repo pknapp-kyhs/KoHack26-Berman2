@@ -314,43 +314,58 @@
 	</body>
 
 <script>
-  function fillAverageRatingsByCategory(data) {
+  const categoryToId = {
+    "Ramps": "ramps",
+    "Elevators": "elevators",
+    "Sensory Friendly": "sensory",
+    "Hard-of-Sight Friendly": "sight",
+    "Hard-of-Hearing Friendly": "hearing"
+  };
+
+  function fillAverageRatingsForShul(data, shulName) {
+    const shul = data.shuls.find(s => s.name === shulName);
+    if (!shul) return;
+
     const totals = {};
     const counts = {};
 
-    for (const shul of data.shuls) {
-      for (const review of shul.reviews) {
-        const category = review.category;
-        const rating = review.rating;
+    for (const review of shul.reviews || []) {
+      if (typeof review.rating !== "number" || !review.category) continue;
 
-        if (!(category in totals)) {
-          totals[category] = 0;
-          counts[category] = 0;
-        }
-
-        totals[category] += rating;
-        counts[category] += 1;
+      if (!(review.category in totals)) {
+        totals[review.category] = 0;
+        counts[review.category] = 0;
       }
+
+      totals[review.category] += review.rating;
+      counts[review.category] += 1;
     }
 
-    for (const category in totals) {
-      const average = totals[category] / counts[category];
-      const element = document.getElementById(category);
+    for (const category in categoryToId) {
+      const id = categoryToId[category];
+      const element = document.getElementById(id);
 
-      if (element) {
-        element.textContent = average.toFixed(1);
+      if (!element) continue;
+
+      if (counts[category]) {
+        element.textContent = (totals[category] / counts[category]).toFixed(1);
+      } else {
+        element.textContent = "No ratings";
       }
     }
   }
 
   async function loadAndFillRatings() {
-    const response = await fetch("reviews.json");
+    const response = await fetch("/reviews.json",{'method':'POST'});
     const data = await response.json();
-    fillAverageRatingsByCategory(data);
+	const selectedLocation = locations[selectedKey];
+	ourShulsName = selectedLocation.name
+    fillAverageRatingsForShul(data, "OurShulsName);
   }
 
   loadAndFillRatings();
 </script>
+
 
 
 
