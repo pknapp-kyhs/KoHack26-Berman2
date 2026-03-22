@@ -3,36 +3,26 @@
 <head>
     <title>My Page</title>
 </head>
-
-
-
+<style>
+	#main_login{
+		display: flex;
+		flex-direction: column;
+	}
+	body{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		
+	}
+</style>
 <body>
 
-		<h1> Login Page <h1>
+	<div id="main_login">
+		<div>No account? <div id="create">Create account</div>
+	</div>
+		<input type="text" placeholder="username">
+		<input type="text" placeholde="password">
 
-		<h6>
-
-		<label for="username">Username:</label >
-    	<input type="text" id="username" name="username" step="any">
-
-		<label for="password">Password:</label >
-    	<input type="text" id="password" name="password" step="any">
-			
-		<button onclick="checkPassword()">Enter</button>
-		
-
-    	<h6>
-		
-
-		
-		
-			
+	</div>
 </body>
-
-<script>
-		const username  = Text(document.getElementById("username").value);
-
-		const password = String(document.getElementById("password").value);
-
-<script>	
 </html>
