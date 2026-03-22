@@ -63,10 +63,6 @@
   			if (navigator.geolocation) {
     			navigator.geolocation.getCurrentPosition(showPosition, showError);
   				}
-
-			else {
-    			console.log("Geolocation is not supported by this browser.");
-  				}
 }
       let map;
       let marker;
@@ -303,6 +299,62 @@
                     break;
             }
         }
+
     </script>
+	<body>
+    <p>Ramps: <span id="ramps"></span>/5</p>
+
+	<p>Elevators: <span id="elevators"></span>/5</p>
+
+	<p>Sensory Friendly: <span id="sensory"></span>/5</p>
+
+	<p>Hard-of-Sight Friendly: <span id="sight"></span>/5</p>
+
+	<p>Hard-of-Hearing Friendly: <span id="hearing"></span>/5</p>
+	</body>
+
+<script>
+  function fillAverageRatingsByCategory(data) {
+    const totals = {};
+    const counts = {};
+
+    for (const shul of data.shuls) {
+      for (const review of shul.reviews) {
+        const category = review.category;
+        const rating = review.rating;
+
+        if (!(category in totals)) {
+          totals[category] = 0;
+          counts[category] = 0;
+        }
+
+        totals[category] += rating;
+        counts[category] += 1;
+      }
+    }
+
+    for (const category in totals) {
+      const average = totals[category] / counts[category];
+      const element = document.getElementById(category);
+
+      if (element) {
+        element.textContent = average.toFixed(1);
+      }
+    }
+  }
+
+  async function loadAndFillRatings() {
+    const response = await fetch("reviews.json");
+    const data = await response.json();
+    fillAverageRatingsByCategory(data);
+  }
+
+  loadAndFillRatings();
+</script>
+
+
+
+	<h1> Comments <h1>
+
   </body>
 </html>
