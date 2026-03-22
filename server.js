@@ -90,29 +90,48 @@ app.post('/addShul',(req,res)=>{
 })
 //post request to sign in (data validation)
 app.post('/signin',(req,res)=>{
-    let key;
-        let data = fs.readFileSync('accounts.json');
-    for(let i = 0; i < data;i++){
-        if(data[i].username === req.body.username && data[i].passcode === req.body.passcode){
+    let key = 0;
+    console.log(req.body);
+    let data = JSON.parse(fs.readFileSync('accounts.json'));
+    for(let i = 0; i < data.users.length; i++){
+        console.log(data.users);
+        if(data.users[i].username === req.body.username && data.users[i].passcode === req.body.passcode){
             key = createKey();
-            data[i].loginKey = key;
-            fs.writeFile('accounts.json',data, (err)=>{if(err){
+            console.log('password match')
+            data.users[i].loginKey = key;
+            fs.writeFileSync('accounts.json',JSON.stringify(data), (err)=>{if(err){
                 throw new Error (err);
             }});
         }
     }
     res.send(JSON.stringify({key:key}));
 });
+//allows users to create an account
 app.post('/createAccount',(req,res)=>{
     let dat = req.body;
     let data = fs.readFileSync('accounts.json');
     data.users.push({
         username:dat.username,
         passcode:dat.passcode,
-        userID:data.length+1,
+        userID:data.users.length+1,
         loginKey:null
 });
-res.send('success');
+res.send('account created');
+})
+//allows you to search for keywords in accounts file
+app.post('/search',
+    (req,res)=>{
+        var bod = req.body;
+    let data = JSON.parse(fs.readFileSync('reviews.json'));
+    let resu = [];
+    //loops through shuls to find any with included term
+    for(let i = 0; i < data.shuls.length; i++){
+       if(data.shuls[i].name.includes(bod.string) || data.shuls[i].location.includes(bod.string)){
+        resu.push(data.shuls[i]);
+       }
+    }
+    res.type('application/json')
+    res.send(json.stringify({results:resu}));
 })
 console.log(createKey());
-app.listen(3000,()=>{console.log('Server online!')})
+app.listen(3000,()=>{console.log('Server online!')});

@@ -7,22 +7,79 @@
 	#main_login{
 		display: flex;
 		flex-direction: column;
+		background-color: rgb(72, 75, 225);
+		border: 1px solid black;
+	}
+	#main_login * {
+		margin: 3px;
 	}
 	body{
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		
+		font-size:18px;
+		margin:0;
+		height:100vh;
+	}
+	#create{
+		text-decoration: underline;
+		color:rgba(71, 114, 205, 0.411);
+		cursor: pointer;
+		display: inline;
+	}
+	input{
+		padding:15px 20px;
+		border:1px solid black;
+	}
+	#login{
+		cursor: pointer;
 	}
 </style>
+<script>
+	//determines whether you are logging in or creating an account
+	let l = 'login';
+	//gets the login key, clicks hyperlink to main
+	async function fetchLogin(){
+		let x = await fetch('/signin',{
+			'method':'POST',
+			'headers':{'Content-type':"application/json",},
+			'body':JSON.stringify({passcode:pass.value,username:user.value})
+		});
+		let res = await x.json();
+		if(res.key != 0){
+		window.location.href = '/' + res.key;
+	}
+		else{
+			alert('login unsuccessful')
+		}
+		return res;
+	}
+	//allows one to create an account
+	async function createAccount(){
+		let x = await fetch('/createAccount',{
+			'method':"POST",
+			headers:{
+				'Content-type':"application/json"
+			},
+			body:JSON.stringify({passcode:pass.value,username:user.value})
+		})
+	}
+	//adds login button click
+	login.addEventListener('click',()=>{
+		if(l==='login'){}
+	});
+	function toggleAccount(){
+
+	}
+</script>
 <body>
-
 	<div id="main_login">
-		<div>No account? <div id="create">Create account</div>
+		<div>Login</div>
+		<div style="font-size:15px">No account? <div id="create" onclick="toggleAccount()">Create account</div>
 	</div>
-		<input type="text" placeholder="username">
-		<input type="text" placeholde="password">
-
+		<input type="text" placeholder="Username" id="user">
+		<input type="text" placeholder="Password" id="pass">
+		<input type="button" value="Login" id="login">
 	</div>
 </body>
 </html>
