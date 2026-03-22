@@ -31,6 +31,9 @@
         margin-bottom: 10px;
       }
     </style>
+<script>
+let loginkey = null;
+</script>
   </head>
   <body>
     <label for="radius">Radius (miles):</label>
@@ -72,22 +75,18 @@
           lng: -74.0060
         }
       };
-
       function initMap() {
         const firstLocation = locations.dc;
         const firstCoords = { lat: firstLocation.lat, lng: firstLocation.lng };
-
         map = new google.maps.Map(document.getElementById("map"), {
           center: firstCoords,
           zoom: 10
         });
-
         marker = new google.maps.Marker({
           position: firstCoords,
           map: map,
           title: firstLocation.name
         });
-
         populateAllLocations();
         document.getElementById("locationTitle").textContent = firstLocation.name;
       }
@@ -95,7 +94,6 @@
       function populateAllLocations() {
         const select = document.getElementById("locationSelect");
         select.innerHTML = "";
-
         for (const key in locations) {
           const option = document.createElement("option");
           option.value = key;
@@ -103,16 +101,13 @@
           select.appendChild(option);
         }
       }
-
       function goToSelectedLocation() {
         const selectedKey = document.getElementById("locationSelect").value;
         if (!selectedKey || !locations[selectedKey]) {
           return;
         }
-
         const selectedLocation = locations[selectedKey];
         const coords = { lat: selectedLocation.lat, lng: selectedLocation.lng };
-
         document.getElementById("locationTitle").textContent = selectedLocation.name;
         map.setCenter(coords);
         map.setZoom(10);
