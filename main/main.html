@@ -358,8 +358,9 @@
   async function loadAndFillRatings() {
     const response = await fetch("/reviews.json",{'method':'POST'});
     const data = await response.json();
+	const selectedKey = document.getElementById("locationSelect").value;
 	const selectedLocation = locations[selectedKey];
-	ourShulsName = selectedLocation.name
+	OurShulsName = selectedLocation.name
     fillAverageRatingsForShul(data, "OurShulsName);
   }
 
