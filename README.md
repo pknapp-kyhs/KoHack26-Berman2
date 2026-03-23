@@ -12,3 +12,8 @@
 #Reviews: This is JSON storage where we show the reviews, who they are tied to, and all information regarding the reviews and ratings
 
 #Server: This is the technical bit where we use servers to connect what is done accross accounts for a unified page.
+
+Three main features:
+1. Synagogue search tool using Google Maps API - #Main
+2. Review system for registered users to leave ratings on different synagogues - #Reviews
+3. Account login system that allows users to create an account and log in, making them able to leave reviews - #Login
