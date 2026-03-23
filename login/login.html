@@ -111,13 +111,12 @@ function updateColor(){
 	const user = document.getElementById("user");
 	const pass = document.getElementById("pass");
 	const login = document.getElementById("login");
-	let colorType = "grey";
+	login.style.backgroundColor = "grey";
 	if(pass.value!="" && user.value!="")
 	{
-		colorType = "green";
+		login.style.backgroundColor = "green";
 	}
-	
-		login.style.backgroundColor = colorType;
+
 }
 	updateColor();
 	setInterval(updateColor, 100);
