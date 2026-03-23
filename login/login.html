@@ -83,7 +83,7 @@
 		if(l==='login'){
 			l = 'createAccount';
 			noaccount.style.display ='none';
-			txt.innerText = 'Create Account'
+			txt.innerText =  'Create Account'
 		}
 		else{
 			l = 'login';
@@ -92,13 +92,32 @@
 	}
 </script>
 <body>
+	
 	<div id="main_login">
 		<div id="txt">Login</div>
-		<div style="font-size:15px" id="noaccount">No account? <div id="create" onclick="toggleAccount()">Create account</div>
+		<div style="font-size:15px" id="noaccount">No account? <div id="create" onclick="toggleAccount()"><p style="color: white;">Create Account</p></div>
 	</div>
 		<input type="text" placeholder="Username" id="user">
-		<input type="text" placeholder="Password" id="pass">
+		<input type="password" placeholder="Password" id="pass">
 		<input type="button" value="Login" id="login">
 	</div>
 </body>
+<script>
+	
+
+function updateColor(){
+	const user = document.getElementById("user");
+	const pass = document.getElementById("pass");
+	const login = document.getElementById("login");
+	let colorType = "grey";
+	if(pass.value!="" && user.value!="")
+	{
+		colorType = "blue";
+	}
+	
+		login.style.backgroundColor = colorType;
+}
+	updateColor();
+	
+</script>
 </html>
