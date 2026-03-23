@@ -98,7 +98,8 @@ app.post('/addShul',(req,res)=>{
         lat:body.lat,
         lng:body.lng,
         location:body.location,
-        reviews:[]
+        ratings:[],
+        description:body.des
     })
     fs.writeFileSync('reviews.json',JSON.stringify(data));
     res.send('done');
@@ -146,8 +147,10 @@ app.post('/search',
         var bod = req.body;
     let data = JSON.parse(fs.readFileSync('reviews.json'));
     let resu = [];
+    console.log(data.shuls.length);
     //loops through shuls to find any with included term
     for(let i = 0; i < data.shuls.length; i++){
+        console.log(data.shuls[i].location);
        if(data.shuls[i].name.includes(bod.string) || data.shuls[i].location.includes(bod.string)){
         resu.push(data.shuls[i]);
        }

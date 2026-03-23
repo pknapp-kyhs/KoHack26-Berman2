@@ -10,7 +10,8 @@
                     location:location.value,
                     name:shul_name.value,
                     lat:latitude.value,
-                    lng:longitude.value
+                    lng:longitude.value,
+                    des:descript.value
                 }),
                 method:'POST',
                 headers:{'Content-type':"application/json"}
@@ -27,6 +28,7 @@
                     key:key,
                     name:currentShul,
                     text:review_text.value,
+
                 }
             })
         }
@@ -93,6 +95,7 @@
 <div class="addLocation">
     <input type="text" placeholder="location" id="location"> 
     <input type="text" placeholder="Name of Synagogue" id="shul_name">
+    <input type="text" placeholder="Description" id="descript">
     <input type="number" placeholder="longitude" id="longitude">
     <input type="number" placeholder="latitude" id="latitude">
     <div class="button" onclick="uploadLocation()">Add location</div>
