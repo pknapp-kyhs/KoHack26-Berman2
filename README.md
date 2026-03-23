@@ -15,6 +15,7 @@
 
 #Kehilati Data Tree: The data tree we used to create Kehilati
 
+#addrating: Allows you to add a review and add a shul if signed in 
 Three main features:
 1. Synagogue search tool using Google Maps API - #Main
 2. Review system for registered users to leave ratings on different synagogues - #Reviews
