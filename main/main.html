@@ -115,23 +115,19 @@
           select.appendChild(option);
         }
       }
-
       function goToSelectedLocation() {
         const selectedKey = document.getElementById("locationSelect").value;
         if (!selectedKey || !locations[selectedKey]) {
           return;
         }
-
         const selectedLocation = locations[selectedKey];
         const coords = { lat: selectedLocation.lat, lng: selectedLocation.lng };
-
         document.getElementById("locationTitle").textContent = selectedLocation.name;
         map.setCenter(coords);
         map.setZoom(10);
         marker.setPosition(coords);
         marker.setTitle(selectedLocation.name);
       }
-
       function filterLocations() {
         const radius = Number(document.getElementById("radius").value);
         const userLng = Number(document.getElementById("longi").value);
@@ -350,7 +346,6 @@
       }
     }
   }
-
   async function loadAndFillRatings() {
     const response = await fetch("/reviews.json",{'method':'POST'});
     const data = await response.json();
@@ -360,6 +355,21 @@
     fillAverageRatingsForShul(data, OurShulsName);
   }
   loadAndFillRatings();
+//processes search results
+  function processData(){}
+//gets search results
+  async function search(query){
+    let x = await fetch('/search',{
+      'method':"POST",
+      body:JSON.stringify({string:query}),
+      headers:{
+        'Content-type':'application/json'
+      }
+    })
+    let res = await x.json();
+    processData(res.results);
+  return res;
+  }
 </script>
 
 

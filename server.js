@@ -71,7 +71,6 @@ app.post('/addReview',(req,res)=>{
                     }
                 }
                 fs.writeFile('reviews.json');
-
             })
         }
     }
@@ -109,14 +108,21 @@ app.post('/signin',(req,res)=>{
 //allows users to create an account
 app.post('/createAccount',(req,res)=>{
     let dat = req.body;
-    let data = fs.readFileSync('accounts.json');
+    let data = JSON.parse(fs.readFileSync('accounts.json'));
+    //makes sure no duplicate usernames
+    for(let i = 0; i < data.users.length; i++){
+        if(data.users[i].username === dat.username){
+            res.send('Error: Username already taken');
+        }
+    }
     data.users.push({
         username:dat.username,
         passcode:dat.passcode,
         userID:data.users.length+1,
         loginKey:null
 });
-res.send('account created');
+fs.writeFileSync('accounts.json',JSON.stringify(data));
+res.send('success');
 })
 //allows you to search for keywords in accounts file
 app.post('/search',
@@ -132,6 +138,10 @@ app.post('/search',
     }
     res.type('application/json')
     res.send(json.stringify({results:resu}));
+})
+app.post('/reviews.json',(req,res)=>{
+    res.type('application/json');
+    res.send(fs.readFileSync('reviews.json'));
 })
 console.log(createKey());
 app.listen(3000,()=>{console.log('Server online!')});
