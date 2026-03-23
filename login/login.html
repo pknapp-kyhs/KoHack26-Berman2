@@ -83,7 +83,7 @@
 		if(l==='login'){
 			l = 'createAccount';
 			noaccount.style.display ='none';
-			txt.innerText = <p style="color: white;">Create Account </p>
+			txt.innerText =  'Create Account'
 		}
 		else{
 			l = 'login';
@@ -94,7 +94,7 @@
 <body>
 	<div id="main_login">
 		<div id="txt">Login</div>
-		<div style="font-size:15px" id="noaccount">No account? <div id="create" onclick="toggleAccount()">Create account</div>
+		<div style="font-size:15px" id="noaccount">No account? <div id="create" onclick="toggleAccount()"><p style="color: white;">Create Account</p></div>
 	</div>
 		<input type="text" placeholder="Username" id="user">
 		<input type="text" placeholder="Password" id="pass">
