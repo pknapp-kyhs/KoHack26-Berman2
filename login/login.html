@@ -23,7 +23,7 @@
 	}
 	#create{
 		text-decoration: underline;
-		color:rgba(71, 114, 205, 0.411);
+		color:rgba(0, 21, 255, 0.411);
 		cursor: pointer;
 		display: inline;
 	}
@@ -63,19 +63,38 @@
 			},
 			body:JSON.stringify({passcode:pass.value,username:user.value})
 		})
+		let res = await x.text();
+		if(res === 'success'){
+			fetchLogin();
+		}
+		else{
+			alert(res)
+		}
+		return res;
 	}
 	//adds login button click
 	login.addEventListener('click',()=>{
-		if(l==='login'){}
+		if(l==='login'){
+			fetchLogin();	
+		}
+		if(l==='createAccount'){createAccount()}
 	});
 	function toggleAccount(){
-
+		if(l==='login'){
+			l = 'createAccount';
+			noaccount.style.display ='none';
+			txt.innerText = 'Create Account'
+		}
+		else{
+			l = 'login';
+			noaccount.style.display = 'block';
+		}
 	}
 </script>
 <body>
 	<div id="main_login">
-		<div>Login</div>
-		<div style="font-size:15px">No account? <div id="create" onclick="toggleAccount()">Create account</div>
+		<div id="txt">Login</div>
+		<div style="font-size:15px" id="noaccount">No account? <div id="create" onclick="toggleAccount()">Create account</div>
 	</div>
 		<input type="text" placeholder="Username" id="user">
 		<input type="text" placeholder="Password" id="pass">

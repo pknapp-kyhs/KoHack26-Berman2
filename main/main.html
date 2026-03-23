@@ -88,18 +88,15 @@
       function initMap() {
         const firstLocation = locations.dc;
         const firstCoords = { lat: firstLocation.lat, lng: firstLocation.lng };
-
         map = new google.maps.Map(document.getElementById("map"), {
           center: firstCoords,
           zoom: 100
         });
-
         marker = new google.maps.Marker({
           position: firstCoords,
           map: map,
           title: firstLocation.name
         });
-
         populateAllLocations();
         document.getElementById("locationTitle").textContent = firstLocation.name;
       }
@@ -215,7 +212,6 @@
           option.disabled = true;
           option.selected = true;
           select.appendChild(option);
-
           document.getElementById("locationTitle").textContent = "No matching locations";
           map.setCenter({ lat: userLat, lng: userLng });
           map.setZoom(10);
@@ -236,7 +232,6 @@
 		return distance*3958.8;
 		}
     </script>
-
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ-MrK7fe_b0tUTyAsIlJ0UspZfxOJ_mc&loading=async&callback=initMap&v=weekly"
       async
@@ -266,14 +261,12 @@
                 x.innerHTML = "Geolocation is not supported by this browser.";
             }
         }
-
         // Success callback function to display the coordinates
         function showPosition(position) {
             x.innerHTML = "Latitude: " + position.coords.latitude + 
             "<br>Longitude: " + position.coords.longitude;
             // You can also access other data like accuracy, altitude, speed, etc.
         }
-
         // Error callback function to handle issues (e.g., user denial, timeout)
         function showError(error) {
             switch(error.code) {
@@ -291,10 +284,10 @@
                     break;
             }
         }
-
     </script>
 	<body>
-    <p>Ramps: <span id="ramps"></span>/5</p>
+    <div id="categoryRatings">
+  <p>Ramps: <span id="ramps"></span>/5</p>
 
 	<p>Elevators: <span id="elevators"></span>/5</p>
 
@@ -304,7 +297,7 @@
 
 	<p>Hard-of-Hearing Friendly: <span id="hearing"></span>/5</p>
 	</body>
-
+</div>
 <script>
   const categoryToId = {
     "Ramps": "ramps",
@@ -313,22 +306,18 @@
     "Hard-of-Sight Friendly": "sight",
     "Hard-of-Hearing Friendly": "hearing"
   };
-
+//takes in entire list of shuls, finds average ratings of a particular shul
   function fillAverageRatingsForShul(data, shulName) {
     const shul = data.shuls.find(s => s.name === shulName);
     if (!shul) return;
-
     const totals = {};
     const counts = {};
-
     for (const review of shul.reviews || []) {
       if (typeof review.rating !== "number" || !review.category) continue;
-
       if (!(review.category in totals)) {
         totals[review.category] = 0;
         counts[review.category] = 0;
       }
-
       totals[review.category] += review.rating;
       counts[review.category] += 1;
     }
@@ -336,9 +325,7 @@
     for (const category in categoryToId) {
       const id = categoryToId[category];
       const element = document.getElementById(id);
-
       if (!element) continue;
-
       if (counts[category]) {
         element.textContent = (totals[category] / counts[category]).toFixed(1);
       } else {
@@ -346,15 +333,6 @@
       }
     }
   }
-  async function loadAndFillRatings() {
-    const response = await fetch("/reviews.json",{'method':'POST'});
-    const data = await response.json();
-	const selectedKey = document.getElementById("locationSelect").value;
-	const selectedLocation = locations[selectedKey];
-	OurShulsName = selectedLocation.name;
-    fillAverageRatingsForShul(data, OurShulsName);
-  }
-  loadAndFillRatings();
 //processes search results
   function processData(){}
 //gets search results
@@ -371,11 +349,6 @@
   return res;
   }
 </script>
-
-
-
-
 	<h1> Comments <h1>
-
   </body>
 </html>

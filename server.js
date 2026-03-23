@@ -137,7 +137,7 @@ app.post('/search',
        }
     }
     res.type('application/json')
-    res.send(json.stringify({results:resu}));
+    res.send(JSON.stringify({results:resu}));
 })
 app.post('/reviews.json',(req,res)=>{
     res.type('application/json');
