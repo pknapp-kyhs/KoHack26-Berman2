@@ -13,6 +13,8 @@
 
 #Server: This is the technical bit where we use servers to connect what is done accross accounts for a unified page.
 
+#Kehilati Data Tree: The data tree we used to create Kehilati
+
 Three main features:
 1. Synagogue search tool using Google Maps API - #Main
 2. Review system for registered users to leave ratings on different synagogues - #Reviews
