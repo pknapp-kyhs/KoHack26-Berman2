@@ -70,10 +70,26 @@ button{
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-bottom:20px;
+        border-bottom:1px solid blue;
+      }
+      .review *{
+        margin:16px;
+      }
+      .text{
+        font-size:20px;
+        font-family:'Times New Roman', Times, serif;
+        color:rgb(50, 45, 45);
+      }
+      .text::before{
+        content:'"';
+      }
+      .text::after{
+        content:'"';
       }
       #rvs{
-        height:200px;
-        width:200px;
+        height:300px;
+        width:400px;
         overflow:auto;
         scrollbar-width: 2px;
         padding:10px;
@@ -87,8 +103,8 @@ button{
   <body>
 <!-- all of the buttons and inputs -->
  <div class="container">
-  <a href="/login" style="color:blue; margin:5px; text-decoration: underline; cursor:pointer;" >Login</a>
-    <div style="color:blue; margin:5px; text-decoration: underline; cursor:pointer;" onclick="let selected = locations[locationSelect.selectedIndex].name.replace(' ', '%20'); document.location.href = '/addrating?key=\'' + loginkey + '\'&shul=\'' + selected+'\'';">Add Review of Selected Location or Add Location</div>
+  <a id="loggy" href="/login" style="color:blue; margin:5px; text-decoration: underline; cursor:pointer;" >Login</a>
+    <div id="adding" style="color:blue; margin:5px; display:none; text-decoration: underline; cursor:pointer;" onclick="let selected = locations[locationSelect.selectedIndex].name.replace(' ', '%20'); document.location.href = '/addrating?key=\'' + loginkey + '\'&shul=\'' + selected+'\'';">Leave a Review for a Synagogue</div>
   </div>
     <br>
      <div class="container">
@@ -100,10 +116,10 @@ button{
     <input type="number" id="latti" name="latti" step="any">
 	<label for="search">Search:</label >
     <input type="text" id="sea" name="search" step="any">
-	<button onclick="locations = search(sea.value); setTimeout(()=>{filterLocations(); goToSelectedLocation();},1000);">Enter</button>
+	<button onclick="locations = search(sea.value); setTimeout(()=>{filterLocations(); goToSelectedLocation(); loadReviews();},1000);">Enter</button>
   </div>  
   <div id="controls">
-      <select id="locationSelect" onchange="goToSelectedLocation()">
+      <select id="locationSelect" onchange="goToSelectedLocation(); loadReviews();">
       </select>
     </div>
 
@@ -310,17 +326,17 @@ button{
       var h = '';
       let average_el = 0;
       let average_wc = 0;
-      let average_ee =0;
+      let average_ee = 0;
       for(let i = 0; i < locations[locationSelect.selectedIndex].reviews.length; i++){
         k = locations[locationSelect.selectedIndex].reviews[i];
         h+=(`<div class="review"><div class="text">${k.text}</div><div class="ratings">WheelChair Access: ${k.ratings.Wheelchair_access}<br> Shabbat Elevator: ${k.ratings.Shabbat_Elevator}<br>Entrance/Exit: ${k.ratings.Entrance_Exit}</div><div class="author">${k.author}</div></div>`)
-        average_el += k.ratings.Shabbat_Elevator;
-        average_ee += k.ratings.Entrance_Exit;
-        average_wc += k.ratings.Wheelchair_access;
+        average_el += Number(k.ratings.Shabbat_Elevator);
+        average_ee += Number(k.ratings.Entrance_Exit);
+        average_wc += Number(k.ratings.Wheelchair_access);
       }
-      ee.innerText = "Average Entrance/Exit Rating: " + (average_ee / locations[locationSelect.selectedIndex].reviews.length);
-      wca.innerText = "Average Entrance/Exit Rating: " + (average_wc / locations[locationSelect.selectedIndex].reviews.length);
-      se.innerText = "Average Entrance/Exit Rating: " + (average_el / locations[locationSelect.selectedIndex].reviews.length);
+      ee.innerText = "Average Entrance/Exit Rating: " + (average_ee / locations[locationSelect.selectedIndex].reviews.length) + "/5";
+      wca.innerText = "Average Entrance/Exit Rating: " + (average_wc / locations[locationSelect.selectedIndex].reviews.length) + "/5";
+      se.innerText = "Average Entrance/Exit Rating: " + (average_el / locations[locationSelect.selectedIndex].reviews.length) + "/5";
       categoryRatings.style.display = 'block';
       rvs.innerHTML = h;
     }

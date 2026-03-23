@@ -48,7 +48,7 @@ app.get('/:key', (req, res) => {
     res.type('text/html');
     let data = fs.readFileSync('main/main.html', 'utf-8');
     if(k){
-        data = data.replace('</body>',`<script>loginkey = "${k}"</script></body>`)
+        data = data.replace('</body>',`<script>loginkey = "${k}"; window.onload=()=>{loggy.style.display = 'none'; adding.style.display = 'block';}</script></body>`)
         res.send(data);
     }
     else{
