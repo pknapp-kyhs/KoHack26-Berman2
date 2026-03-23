@@ -1,1 +1,112 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        let key = 0;
+        let currentShul;
+        async function uploadLocation(){
+            return await fetch('/addShul',{
+                body:JSON.stringify({
+                    location:location.value,
+                    name:shul_name.value,
+                    lat:latitude.value,
+                    lng:longitude.value
+                }),
+                method:'POST',
+                headers:{'Content-type':"application/json"}
+            })
+        }
+        function uploadReview(){
+            fetch('/addReview',{
+                method:'POST',
+                headers:{'Content-type':"application/json"},
+                body:{
+                    els:elevator_rating.value,
+                    wc:wheelchair_rating.value,
+                    ee:entrance_exit_rating.value,
+                    key:key,
+                    name:currentShul,
+                    text:review_text.value,
+                }
+            })
+        }
+    </script>
+    <style>
+        body{
+            background:lightblue;
+            margin:0;
+            height:100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+        .addLocation{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+        .addReview{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+        input{
+            margin:15px;
+            padding:7px;
+            border:1px solid rgb(0, 64, 255);
+            font-size:20px;
+            field-sizing: content;
+}
+        .button{
+            border:2px solid rgb(0, 64, 255);;
+            padding:10px 15px;
+            font-size:20px;
+            cursor: pointer;
+            margin:15px;
+        }
+        .button:hover{
+            border:2px solid grey;
+        }
+        label{
+            margin:15px;
+            font-family: sans-serif;
+            font-size:20px;
+        }
+        #home{
+            cursor: pointer;
+            text-decoration: underline;
+            font-size:larger;
+            padding:7px 12px;
+            border:1px solid transparent;
+        }
+        #home:hover{
+            border:1px solid rgb(0, 64, 255);
+        }
+    </style>
+</head>
+<body>
+    <div id="home" onclick="document.location.href='/' + key">Back to Home</div>
+    <h2>Add a Synagogue</h2>
+<div class="addLocation">
+    <input type="text" placeholder="location" id="location"> 
+    <input type="text" placeholder="Name of Synagogue" id="shul_name">
+    <input type="number" placeholder="longitude" id="longitude">
+    <input type="number" placeholder="latitude" id="latitude">
+    <div class="button" onclick="uploadLocation()">Add location</div>
+</div>
+<h2>Add a Review</h2>
+<div class="addReview">
+<input type="text" id="review_text" placeholder="Main review text">
+<label for="elevator_rating">Shabbos Elevator Rating: </label>
+<input type="number" min="1" max="5" id="elevator_rating" name="elevator_rating" value="5">
+<label for="entrance_exit_rating">Entrance/exit Rating: </label>
+<input type="number" min="1" max="5" id="entrance_exit_rating" name="entrance_exit_rating" value="5">
+<label for="wheelchair_rating">Wheelchair Accessibility Rating: </label>
+<input type="number" min="1" max="5" id="wheelchair_rating" name="wheelchair_rating" value="5">
+<div class="button" onclick="uploadReview()">Add review</div>
+</div>
+</body>
+</html>

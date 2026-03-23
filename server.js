@@ -31,6 +31,17 @@ app.get('/login',(req, res)=>{
     res.type("text/html");
     res.sendFile(path.join(__dirname, 'login','login.html'));
 });
+app.get('/addrating',(req,res)=>{
+    let k = req.query.key
+    let s = req.query.shul
+    let data = JSON.stringify(fs.readFileSync(path.join(__dirname, '/addrating/addrating.html'), 'utf-8'));
+    console.log(data);
+    if(s&&k){
+    data = data.replace('</body>',`<script>key = ${k}; currentShul = ${s}; </script></body>`)}
+    res.type('text/html');
+    console.log(typeof data);
+    res.send(JSON.parse(data));
+})
 //specifically for the key, must be last get request or the whole thing breaks
 app.get('/:key', (req, res) => {
     var k = req.params.key;
@@ -64,8 +75,11 @@ app.post('/addReview',(req,res)=>{
                         if(parsedData.shuls[x].name === req.body.name){
                             parsedData.shuls[x].reviews.push({
                                 text:req.body.text,
-                                rating:req.body.rating,
-                                category:req.body.category,
+                                ratings:{
+                                    "Shabbat_Elevator":req.body.els,
+                                    "Entrance_Exit":req.body.ee,
+                                    "Wheelchair_access":req.body.wc
+                                },
                                 author:data[i].username,
                         })
                     }
@@ -74,10 +88,11 @@ app.post('/addReview',(req,res)=>{
             })
         }
     }
-});
+}
+);
 app.post('/addShul',(req,res)=>{
     let body = req.body;
-    let data = JSON.parse(fs.readFileSync('accounts.json'));
+    let data = JSON.parse(fs.readFileSync('reviews.json'));
     data.shuls.push({
         name:body.name,
         lat:body.lat,
@@ -85,6 +100,7 @@ app.post('/addShul',(req,res)=>{
         location:body.location,
         reviews:[]
     })
+    fs.writeFileSync('reviews.json',JSON.stringify(data));
     res.send('done');
 })
 //post request to sign in (data validation)

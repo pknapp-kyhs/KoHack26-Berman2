@@ -1,15 +1,1 @@
-{
-    "shuls":[
-        {"name":"KMS","location":"Silver Spring, MD", "description":"Lively orthodox synogoguegogogoguggo", "lng":-77.0,"lat":35.5, "reviews":[
-            {
-                "text":"Extremely accessible. My old frail grandmother with a dislocated knee ran up the ramp like she was running from a tiger.",
-                "ratings":{
-                    "Shabbat_Elevator":5,
-                    "Entrance_Exit":5,
-                    "Wheelchair_access":5
-                },
-                "author":"Micah Pelman"
-            }
-        ]}
-    ]
-}
+{"shuls":[{"name":"KMS","location":"Silver Spring, MD","description":"Lively orthodox synogoguegogogoguggo","lng":-77,"lat":35.5,"reviews":[{"text":"Extremely accessible. My old frail grandmother with a dislocated knee ran up the ramp like she was running from a tiger.","ratings":{"Shabbat_Elevator":5,"Entrance_Exit":5,"Wheelchair_access":5},"author":"Micah Pelman"}]},{"name":"Kehilat Pardes","lat":"35","lng":"-63","reviews":[]}]}

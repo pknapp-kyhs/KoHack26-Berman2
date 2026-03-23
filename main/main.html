@@ -35,7 +35,6 @@
     </style>
   </head>
   <body>
-
 <!-- all of the buttons and inputs -->
     <label for="radius">Radius (miles):</label>
     <input type="number" id="radius" name="radius" step="any">
@@ -45,21 +44,13 @@
 
     <label for="latti">Your Latitude:</label>
     <input type="number" id="latti" name="latti" step="any">
-
     <button onclick="filterLocations()">Filter Locations</button>
-
-
 	<label for="search">Search:</label >
     <input type="text" id="search" name="search" step="any">
-			
-	<button onclick="filterLocationsSearch()">Enter</button>
-
+	<button onclick="locations = filterLocationsSearch()">Enter</button>
     <div id="controls">
       <select id="locationSelect" onchange="goToSelectedLocation()"></select>
     </div>
-<!-- maps -->
-    <div id="locationTitle"></div>
-    <div id="map"></div>
 
     <script>
 // Mainly just copy and pasted from google maps official site 
@@ -88,7 +79,6 @@
           lng: -74.0060
         }
       };
-
       function initMap() {
         const firstLocation = locations.dc;
         const firstCoords = { lat: firstLocation.lat, lng: firstLocation.lng };
@@ -108,7 +98,6 @@
       function populateAllLocations() {
         const select = document.getElementById("locationSelect");
         select.innerHTML = "";
-
         for (const key in locations) {
           const option = document.createElement("option");
           option.value = key;
@@ -190,24 +179,18 @@
         const userLng = Number(document.getElementById("longi").value);
         const userLat = Number(document.getElementById("latti").value);
 		const userSearch = document.getElementById("search").value;
-        
-
         const select = document.getElementById("locationSelect");
         select.innerHTML = "";
-
         let foundAny = false;
         let firstMatchKey = null;
-
         for (const key in locations) {
           const loc = locations[key];
           const distance = getDistanceMiles(userLat, userLng, loc.lat, loc.lng);
-
           if (loc.name.includes(userSearch)) {
             const option = document.createElement("option");
             option.value = key;
             option.textContent = loc.name;
             select.appendChild(option);
-
             if (!firstMatchKey) {
               firstMatchKey = key;
             }
@@ -228,14 +211,12 @@
           marker.setTitle("Your coordinates");
           return;
         }
-
         select.value = firstMatchKey;
         goToSelectedLocation();
       }
 	function getDistanceMiles(lat1, lon1, lat2, lon2) {
    	 	dLat = Math.PI*(lat1- lat2)/180;
 		dLon = Math.PI*(lon1 - lon2)/180;
-
   		let x = dLon*dLon+dLat*dLat;
   		let distance = Math.sqrt(x);
 		return distance*3958.8;
@@ -243,10 +224,7 @@
 
     </script>
 
-
-    </script>
 <!-- our demo key from google maps -->
-
 
 <!-- This is a bunch of code copied from google telling us our location should we choose to have it -->
     <script
@@ -256,7 +234,6 @@
 
 	    <h2>User Location</h2>
     <p>Click the button to get your coordinates (latitude and longitude):</p>
-    
     <!-- The button that triggers the location request -->
     <button onclick="getLocation()">Get Location</button>
     
@@ -267,7 +244,6 @@
     <script>
         // Get the <p> element by its ID
         const x = document.getElementById("demo");
-
         function getLocation() {
             // Check if the browser supports the Geolocation API
             if (navigator.geolocation) {
@@ -303,18 +279,14 @@
         }
 // reviews 
     </script>
-	<body>
-    <div id="categoryRatings">
-  <p>Ramps: <span id="ramps"></span>/5</p>
-
-	<p>Elevators: <span id="elevators"></span>/5</p>
-
-	<p>Sensory Friendly: <span id="sensory"></span>/5</p>
-	</body>
+    <div id="categoryRatings" style="display:none">
+  <p>Shabbat Elevators <span id="ramps"></span>/5</p>
+	<p>Wheel Chair Access: <span id="elevators"></span>/5</p>
+	<p>Entrance Exit<span id="sensory"></span>/5</p>
 </div>
 <script>
 //processes search results
-  function processData(){}
+  function processData(a){locations = a;}
 //gets search results
   async function search(query){
     let x = await fetch('/search',{
@@ -329,6 +301,8 @@
   return res;
   }
 </script>
-	<h1> Comments <h1>
+	<!-- maps -->
+    <div id="locationTitle"></div>
+    <div id="map"></div>
   </body>
 </html>
