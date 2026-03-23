@@ -104,11 +104,12 @@
 </body>
 <script>
 	
-const user = document.getElementById("user");
-const pass = document.getElementById("pass");
-const login = document.getElementById("login");
-	let colorType = "grey";
+
 function updateColor(){
+	const user = document.getElementById("user");
+	const pass = document.getElementById("pass");
+	const login = document.getElementById("login");
+	let colorType = "grey";
 	if(pass.value!="" && user.value!="")
 	{
 		colorType = "blue";
