@@ -57,6 +57,7 @@ app.get('/:key', (req, res) => {
 });
 //post request to add a review
 app.post('/addReview',(req,res)=>{
+    console.log(req.body);
     //error handling
     if(!req.body.key){
         res.send(new Error('key not valid'));
@@ -64,14 +65,11 @@ app.post('/addReview',(req,res)=>{
     //reads accounts.json file
     let data = JSON.parse(fs.readFileSync('accounts.json'));
     console.log(data);
-    for(let i = 0; i < data.length; i++){
+    for(let i = 0; i < data.users.length; i++){
         //checks if loginKey of a particular account is 
-        if(data[i].loginKey === req.body.key){
-            fs.readFile('reviews.json',(err, dat)=>{
-                if(err){
-                    throw new Error(err);
-                }
-                let parsedData = JSON.parse(dat);
+        if(data.users[i].loginKey === req.body.key){
+            console.log("readdddddddd");
+                let parsedData = JSON.parse(fs.readFileSync('reviews.json'));
                 for(let x = 0; x < parsedData.shuls.length; x++){
                         if(parsedData.shuls[x].name === req.body.name){
                             parsedData.shuls[x].reviews.push({
@@ -81,12 +79,11 @@ app.post('/addReview',(req,res)=>{
                                     "Entrance_Exit":req.body.ee,
                                     "Wheelchair_access":req.body.wc
                                 },
-                                author:data[i].username,
+                                author:data.users[i].username,
                         })
                     }
                 }
-                fs.writeFile('reviews.json');
-            })
+                fs.writeFile('reviews.json',JSON.stringify(parsedData),()=>{});
         }
     }
 }

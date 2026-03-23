@@ -21,7 +21,7 @@
             fetch('/addReview',{
                 method:'POST',
                 headers:{'Content-type':"application/json"},
-                body:{
+                body:JSON.stringify({
                     els:elevator_rating.value,
                     wc:wheelchair_rating.value,
                     ee:entrance_exit_rating.value,
@@ -29,7 +29,7 @@
                     name:currentShul,
                     text:review_text.value,
 
-                }
+                })
             })
         }
     </script>

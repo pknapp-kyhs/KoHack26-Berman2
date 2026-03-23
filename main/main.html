@@ -13,6 +13,10 @@
         font-family: sans-serif;
 
       }
+      p{
+        font-size:15px;
+        margin:10px;
+      }
       #locationTitle {
         font-size: 24px;
         font-weight: bold;
@@ -84,11 +88,10 @@ button{
 <!-- all of the buttons and inputs -->
  <div class="container">
   <a href="/login" style="color:blue; margin:5px; text-decoration: underline; cursor:pointer;" >Login</a>
-    <div style="color:blue; margin:5px; text-decoration: underline; cursor:pointer;" onclick="let selected = locations[locationSelect.selectedIndex].name.replace(' ', '%20'); document.location.href = '/addrating?key=' + loginkey + '&shul=' + selected;">Add Review of Selected Location or Add Location</div>
+    <div style="color:blue; margin:5px; text-decoration: underline; cursor:pointer;" onclick="let selected = locations[locationSelect.selectedIndex].name.replace(' ', '%20'); document.location.href = '/addrating?key=\'' + loginkey + '\'&shul=\'' + selected+'\'';">Add Review of Selected Location or Add Location</div>
   </div>
     <br>
      <div class="container">
-
     <label for="radius">Radius (miles):</label>
     <input type="number" id="radius" name="radius" value="5000" step="any">
     <label for="longi">Your Longitude:</label>
@@ -96,7 +99,6 @@ button{
     <label for="latti">Your Latitude:</label>
     <input type="number" id="latti" name="latti" step="any">
 	<label for="search">Search:</label >
-    
     <input type="text" id="sea" name="search" step="any">
 	<button onclick="locations = search(sea.value); setTimeout(()=>{filterLocations(); goToSelectedLocation();},1000);">Enter</button>
   </div>  
@@ -137,7 +139,6 @@ button{
         const firstLocation = locations.dc;
         const firstCoords = { lat: firstLocation.lat, lng: firstLocation.lng };
         //sets input value
-
         map = new google.maps.Map(document.getElementById("map"), {
           center: firstCoords,
           zoom: 100
