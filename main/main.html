@@ -149,10 +149,15 @@ button{
           name: "New York City",
           lat: 40.7128,
           lng: -74.0060
+        },
+		  KMS: {
+          name: "Kemp Mill Synagogue",
+          lat: 39.0518,
+          lng: -77.0252
         }
       };
       function initMap() {
-        const firstLocation = locations.dc;
+        const firstLocation = locations.KMS;
         const firstCoords = { lat: firstLocation.lat, lng: firstLocation.lng };
         //sets input value
         map = new google.maps.Map(document.getElementById("map"), {
