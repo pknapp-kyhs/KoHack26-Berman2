@@ -189,8 +189,6 @@
         const userLng = Number(document.getElementById("longi").value);
         const userLat = Number(document.getElementById("latti").value);
 		const userSearch = document.getElementById("search").value;
-        
-
         const select = document.getElementById("locationSelect");
         select.innerHTML = "";
 
@@ -241,8 +239,6 @@
   		let distance = Math.sqrt(x);
 		return distance*3958.8;
 		}
-
-
     </script>
 
     <script
@@ -360,10 +356,9 @@
     const data = await response.json();
 	const selectedKey = document.getElementById("locationSelect").value;
 	const selectedLocation = locations[selectedKey];
-	OurShulsName = selectedLocation.name
-    fillAverageRatingsForShul(data, "OurShulsName);
+	OurShulsName = selectedLocation.name;
+    fillAverageRatingsForShul(data, OurShulsName);
   }
-
   loadAndFillRatings();
 </script>
 
