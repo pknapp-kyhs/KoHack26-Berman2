@@ -92,13 +92,27 @@
 	}
 </script>
 <body>
+	
 	<div id="main_login">
 		<div id="txt">Login</div>
 		<div style="font-size:15px" id="noaccount">No account? <div id="create" onclick="toggleAccount()"><p style="color: white;">Create Account</p></div>
 	</div>
 		<input type="text" placeholder="Username" id="user">
 		<input type="password" placeholder="Password" id="pass">
-		<input type="button" value="Login" style="background-color: #04AA6D; color: white;" id="login">
+		<input type="button" value="Login" id="login">
 	</div>
 </body>
+<script>
+	
+const user = document.getElementById("user");
+const pass = document.getElementById("pass");
+const login = document.getElementById("login");
+	let colorType = "grey";
+	if(pass.value!="" && user.value!="")
+	{
+		colorType = "blue";
+	}
+	
+		login.style.backgroundColor = colorType;
+</script>
 </html>
