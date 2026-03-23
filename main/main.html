@@ -134,17 +134,12 @@ button{
       let map;
       let marker;
 // shul names 
-      var locations = {
-        
-        
-		  KMS: {
-          name: "Kemp Mill Synagogue",
-          lat: 39.0518,
-          lng: -77.0252
-        }
-      };
+      var locations = [
+        {"name":"KMS","location":"Silver Spring, MD","description":"Lively orthodox synogoguegogogoguggo","lng":-77.0252,"lat":39.0518,"reviews":[{"text":"Extremely accessible. My old frail grandmother with a dislocated knee ran up the ramp like she was running from a tiger.","ratings":{"Shabbat_Elevator":5,"Entrance_Exit":5,"Wheelchair_access":5},"author":"Micah Pelman"},{"text":"Good, but no Elevator.","ratings":{"Shabbat_Elevator":"1","Entrance_Exit":"5","Wheelchair_access":"5"},"author":"Micah Pelman"}]}
+      ];
+      
       function initMap() {
-        const firstLocation = locations.KMS;
+        const firstLocation = locations[0];
         const firstCoords = { lat: firstLocation.lat, lng: firstLocation.lng };
         //sets input value
         map = new google.maps.Map(document.getElementById("map"), {
@@ -158,6 +153,7 @@ button{
         });
         populateAllLocations();
         document.getElementById("locationTitle").textContent = firstLocation.name;
+        loadReviews();
       }
     //initialization
       function populateAllLocations() {
@@ -296,7 +292,7 @@ button{
 
 <!-- This is a bunch of code copied from google telling us our location should we choose to have it -->
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ-MrK7fe_b0tUTyAsIlJ0UspZfxOJ_mc&loading=async&callback=initMap&v=weekly"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSmqfTX6HDWkbnJm3lC-4ccj3n-MtT1KM&loading=async&callback=initMap&v=weekly"
       async
     ></script>
     <div class="container">
