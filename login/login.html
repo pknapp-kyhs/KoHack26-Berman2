@@ -35,6 +35,19 @@
 		cursor: pointer;
 	}
 </style>
+
+<body>
+	
+	<div id="main_login">
+		<div id="txt">Login</div>
+		<div style="font-size:15px" id="noaccount">No account? <div id="create" onclick="toggleAccount()"><p style="color: white;">Create Account</p></div>
+	</div>
+		<input type="text" placeholder="Username" id="user">
+		<input type="password" placeholder="Password" id="pass">
+		<input type="button" value="Login" id="login">
+	</div>
+</body>
+
 <script>
 	//determines whether you are logging in or creating an account
 	let l = 'login';
@@ -91,17 +104,6 @@
 		}
 	}
 </script>
-<body>
-	
-	<div id="main_login">
-		<div id="txt">Login</div>
-		<div style="font-size:15px" id="noaccount">No account? <div id="create" onclick="toggleAccount()"><p style="color: white;">Create Account</p></div>
-	</div>
-		<input type="text" placeholder="Username" id="user">
-		<input type="password" placeholder="Password" id="pass">
-		<input type="button" value="Login" id="login">
-	</div>
-</body>
 <script>
 	
 
