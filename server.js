@@ -62,7 +62,8 @@ app.post('/addReview',(req,res)=>{
         res.send(new Error('key not valid'));
     }
     //reads accounts.json file
-    let data = JSON.parse(fs.readFile('accounts.json'));
+    let data = JSON.parse(fs.readFileSync('accounts.json'));
+    console.log(data);
     for(let i = 0; i < data.length; i++){
         //checks if loginKey of a particular account is 
         if(data[i].loginKey === req.body.key){
@@ -151,7 +152,7 @@ app.post('/search',
     //loops through shuls to find any with included term
     for(let i = 0; i < data.shuls.length; i++){
         console.log(data.shuls[i].location);
-       if(data.shuls[i].name.includes(bod.string) || data.shuls[i].location.includes(bod.string)){
+       if(data.shuls[i].name.includes(bod.string) || data.shuls[i].location.includes(bod.string) || data.shuls[i].location.includes(bod.string)){
         resu.push(data.shuls[i]);
        }
     }

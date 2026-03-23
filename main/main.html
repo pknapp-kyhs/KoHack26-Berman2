@@ -6,12 +6,28 @@
     <meta charset="utf-8" />
     <title>Let's Find Us a Shul</title>
     <style>
+      body{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: sans-serif;
+
+      }
       #locationTitle {
         font-size: 24px;
         font-weight: bold;
         margin-bottom: 10px;
       }
-
+        input, button{
+            margin:15px;
+            padding:7px 13px;
+            border:1px solid rgb(0, 0, 0);
+            font-size:20px;
+            field-sizing: content;
+}
+button{
+  cursor: pointer;
+}
       #controls {
         margin-bottom: 10px;
       }
@@ -28,28 +44,65 @@
       input {
         margin-right: 12px;
       }
-
+      #sea{
+        min-width: 60px;
+      }      
       button {
         margin-bottom: 10px;
+      }
+      .container{
+        margin:5px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+      }
+      label{
+        font-size:18px;
+      }
+      .review{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #rvs{
+        height:200px;
+        width:200px;
+        overflow:auto;
+        scrollbar-width: 2px;
+        padding:10px;
+      }
+      .author{
+        border-top:1px;
+        font-size:12px;
       }
     </style>
   </head>
   <body>
 <!-- all of the buttons and inputs -->
-    <label for="radius">Radius (miles):</label>
-    <input type="number" id="radius" name="radius" step="any">
+ <div class="container">
+  <a href="/login" style="color:blue; margin:5px; text-decoration: underline; cursor:pointer;" >Login</a>
+    <div style="color:blue; margin:5px; text-decoration: underline; cursor:pointer;" onclick="let selected = locations[locationSelect.selectedIndex].name.replace(' ', '%20'); document.location.href = '/addrating?key=' + loginkey + '&shul=' + selected;">Add Review of Selected Location or Add Location</div>
+  </div>
+    <br>
+     <div class="container">
 
+    <label for="radius">Radius (miles):</label>
+    <input type="number" id="radius" name="radius" value="5000" step="any">
     <label for="longi">Your Longitude:</label>
     <input type="number" id="longi" name="longi" step="any">
-
     <label for="latti">Your Latitude:</label>
     <input type="number" id="latti" name="latti" step="any">
-    <button onclick="filterLocations()">Filter Locations</button>
 	<label for="search">Search:</label >
-    <input type="text" id="search" name="search" step="any">
-	<button onclick="locations = filterLocationsSearch()">Enter</button>
-    <div id="controls">
-      <select id="locationSelect" onchange="goToSelectedLocation()"></select>
+    
+    <input type="text" id="sea" name="search" step="any">
+	<button onclick="locations = search(sea.value); setTimeout(()=>{filterLocations(); goToSelectedLocation();},1000);">Enter</button>
+  </div>  
+  <div id="controls">
+      <select id="locationSelect" onchange="goToSelectedLocation()">
+      </select>
     </div>
 
     <script>
@@ -58,11 +111,12 @@
   			if (navigator.geolocation) {
     			navigator.geolocation.getCurrentPosition(showPosition, showError);
   				}
+          console.log(navigator.geolocation)
 }
       let map;
       let marker;
 // shul names 
-      const locations = {
+      var locations = {
         dc: {
           name: "Ohev Shalom, DC",
           lat: 38.9072,
@@ -82,6 +136,8 @@
       function initMap() {
         const firstLocation = locations.dc;
         const firstCoords = { lat: firstLocation.lat, lng: firstLocation.lng };
+        //sets input value
+
         map = new google.maps.Map(document.getElementById("map"), {
           center: firstCoords,
           zoom: 100
@@ -94,7 +150,7 @@
         populateAllLocations();
         document.getElementById("locationTitle").textContent = firstLocation.name;
       }
-
+    //initialization
       function populateAllLocations() {
         const select = document.getElementById("locationSelect");
         select.innerHTML = "";
@@ -111,13 +167,19 @@
         if (!selectedKey || !locations[selectedKey]) {
           return;
         }
-        const selectedLocation = locations[selectedKey];
-        const coords = { lat: selectedLocation.lat, lng: selectedLocation.lng };
+        //gets selected option, and isolates the name
+        selected = locationSelect.options[locationSelect.selectedIndex].innerHTML.split("(")[0].trim();
+        for(let i = 0; i < locations.length; i++){
+          if(locations[i].name === selected){
+          const selectedLocation = locations[i];
+        const coords = { lat: Number(selectedLocation.lat), lng: Number(selectedLocation.lng)};
         document.getElementById("locationTitle").textContent = selectedLocation.name;
         map.setCenter(coords);
-        map.setZoom(10);
+        map.setZoom(20);
         marker.setPosition(coords);
         marker.setTitle(selectedLocation.name);
+      }
+      }
       }
 // filters via radius 
       function filterLocations() {
@@ -129,13 +191,10 @@
           alert("Please enter valid numbers for radius, longitude, and latitude.");
           return;
         }
-
         const select = document.getElementById("locationSelect");
         select.innerHTML = "";
-
         let foundAny = false;
         let firstMatchKey = null;
-
         for (const key in locations) {
           const loc = locations[key];
           const distance = getDistanceMiles(userLat, userLng, loc.lat, loc.lng);
@@ -231,17 +290,39 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ-MrK7fe_b0tUTyAsIlJ0UspZfxOJ_mc&loading=async&callback=initMap&v=weekly"
       async
     ></script>
-
+    <div class="container">
 	    <h2>User Location</h2>
     <p>Click the button to get your coordinates (latitude and longitude):</p>
     <!-- The button that triggers the location request -->
     <button onclick="getLocation()">Get Location</button>
-    
     <!-- The paragraph element where the coordinates will be displayed -->
-    <p id="demo">Geolocation is not supported by this browser.</p>
+    <p id="demo" style="color:red">
+    </p>
+    <div class="reviews" id="rvs">
 
+    </div>
+</div>
     <!-- JavaScript code using the Geolocation API -->
     <script>
+      //uploads reviews
+    function loadReviews(){
+      var h = '';
+      let average_el = 0;
+      let average_wc = 0;
+      let average_ee =0;
+      for(let i = 0; i < locations[locationSelect.selectedIndex].reviews.length; i++){
+        k = locations[locationSelect.selectedIndex].reviews[i];
+        h+=(`<div class="review"><div class="text">${k.text}</div><div class="ratings">WheelChair Access: ${k.ratings.Wheelchair_access}<br> Shabbat Elevator: ${k.ratings.Shabbat_Elevator}<br>Entrance/Exit: ${k.ratings.Entrance_Exit}</div><div class="author">${k.author}</div></div>`)
+        average_el += k.ratings.Shabbat_Elevator;
+        average_ee += k.ratings.Entrance_Exit;
+        average_wc += k.ratings.Wheelchair_access;
+      }
+      ee.innerText = "Average Entrance/Exit Rating: " + (average_ee / locations[locationSelect.selectedIndex].reviews.length);
+      wca.innerText = "Average Entrance/Exit Rating: " + (average_wc / locations[locationSelect.selectedIndex].reviews.length);
+      se.innerText = "Average Entrance/Exit Rating: " + (average_el / locations[locationSelect.selectedIndex].reviews.length);
+      categoryRatings.style.display = 'block';
+      rvs.innerHTML = h;
+    }
         // Get the <p> element by its ID
         const x = document.getElementById("demo");
         function getLocation() {
@@ -256,8 +337,8 @@
         }
         // Success callback function to display the coordinates
         function showPosition(position) {
-            x.innerHTML = "Latitude: " + position.coords.latitude + 
-            "<br>Longitude: " + position.coords.longitude;
+            longi.value = Math.round(Number(position.coords.longitude*1000))/1000;
+            latti.value = Math.round(Number(position.coords.latitude*1000))/1000;
             // You can also access other data like accuracy, altitude, speed, etc.
         }
         // Error callback function to handle issues (e.g., user denial, timeout)
@@ -277,16 +358,19 @@
                     break;
             }
         }
-// reviews 
+// reviews
     </script>
+
     <div id="categoryRatings" style="display:none">
-  <p>Shabbat Elevators <span id="ramps"></span>/5</p>
-	<p>Wheel Chair Access: <span id="elevators"></span>/5</p>
-	<p>Entrance Exit<span id="sensory"></span>/5</p>
+  <p id="se">Shabbat Elevators <span id="ramps"></span>/5</p>
+	<p id="wca">Wheel Chair Access: <span id="elevators"></span>/5</p>
+	<p id="ee">Entrance Exit<span id="sensory"></span>/5</p>
 </div>
 <script>
 //processes search results
-  function processData(a){locations = a;}
+  function processData(a){
+    locations = a;
+  }
 //gets search results
   async function search(query){
     let x = await fetch('/search',{
