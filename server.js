@@ -68,7 +68,6 @@ app.post('/addReview',(req,res)=>{
     for(let i = 0; i < data.users.length; i++){
         //checks if loginKey of a particular account is 
         if(data.users[i].loginKey === req.body.key){
-            console.log("readdddddddd");
                 let parsedData = JSON.parse(fs.readFileSync('reviews.json'));
                 for(let x = 0; x < parsedData.shuls.length; x++){
                         if(parsedData.shuls[x].name === req.body.name){

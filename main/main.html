@@ -116,10 +116,10 @@ button{
     <input type="number" id="latti" name="latti" step="any">
 	<label for="search">Search:</label >
     <input type="text" id="sea" name="search" step="any">
-	<button onclick="locations = search(sea.value); setTimeout(()=>{filterLocations(); goToSelectedLocation(); loadReviews();},1000);">Enter</button>
+	<button onclick="locations = search(sea.value); setTimeout(()=>{filterLocations(); goToSelectedLocation(); try{loadReviews()} catch{rvs.innerHTML = '';}},500);">Enter</button>
   </div>  
   <div id="controls">
-      <select id="locationSelect" onchange="goToSelectedLocation(); loadReviews();">
+      <select id="locationSelect" onchange="goToSelectedLocation(); setTimeout(()=>{try{loadReviews()} catch{rvs.innerHTML = '';}},500)">
       </select>
     </div>
 
@@ -312,6 +312,7 @@ button{
       //uploads reviews
     function loadReviews(){
       var h = '';
+      //used for averages
       let average_el = 0;
       let average_wc = 0;
       let average_ee = 0;
